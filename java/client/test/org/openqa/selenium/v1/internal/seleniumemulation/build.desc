@@ -1,0 +1,14 @@
+
+java_library(name = "small_tests",
+  srcs = [
+    "CompoundMutatorTest.java",
+    "SmallTests.java",
+    "TimerTest.java",
+    "VariableDeclarationTest.java",
+  ],
+  deps = [
+    "//java/client/src/com/thoughtworks/selenium:api",
+    "//java/client/src/org/openqa/selenium:webdriver-api",
+    "//java/client/src/com/thoughtworks/selenium/webdriven:webdriven",
+    "//third_party/java/junit",
+  ])

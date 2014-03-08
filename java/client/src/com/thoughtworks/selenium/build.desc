@@ -1,0 +1,37 @@
+java_library(name = "api",
+  srcs = [
+    "CommandProcessor.java",
+    "Selenium.java",
+    "SeleniumException.java",
+  ])
+
+java_library(name = "selenium",
+  srcs = [
+    "BrowserConfigurationOptions.java",
+    "DefaultRemoteCommand.java",
+    "DefaultSelenium.java",
+    "HttpCommandProcessor.java",
+    "RemoteCommand.java",
+    "ScreenshotListener.java",
+    "SeleneseTestBase.java",
+    "SeleneseTestCase.java",
+    "SeleneseTestNgHelper.java",
+    "SeleniumLogLevels.java",
+  ],
+  deps = [
+    ":api",
+    ":wait",
+    "//java/client/src/com/thoughtworks/selenium/condition",
+    "//java/client/src/org/openqa/selenium/net",
+    "//third_party/java/guava-libraries",
+    "//third_party/java/junit",
+    "//third_party/java/testng",
+  ])
+
+java_library(name = "wait",
+  srcs = [
+    "Wait.java",
+  ],
+  deps = [
+    ":api",
+  ])
