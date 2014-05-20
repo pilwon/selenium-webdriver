@@ -31,6 +31,7 @@
  * simplify writing asynchronous tests:
  * <pre><code>
  * var webdriver = require('selenium-webdriver'),
+ *     portprober = require('selenium-webdriver/net/portprober'),
  *     remote = require('selenium-webdriver/remote'),
  *     test = require('selenium-webdriver/testing');
  *
@@ -38,9 +39,9 @@
  *   var driver, server;
  *
  *   test.before(function() {
- *     server = new remote.SeleniumServer({
- *       jar: 'path/to/selenium-server-standalone.jar'
- *     });
+ *     server = new remote.SeleniumServer(
+ *         'path/to/selenium-server-standalone.jar',
+ *         {port: portprober.findFreePort()});
  *     server.start();
  *
  *     driver = new webdriver.Builder().
@@ -118,10 +119,22 @@ function wrapped(globalFn) {
   };
 
   function asyncTestFn(fn) {
-    return function(done) {
+    var ret = function(done) {
       this.timeout(0);
-      flow.execute(fn).then(seal(done), done);
+      var timeout = this.timeout;
+      this.timeout = undefined;  // Do not let tests change the timeout.
+      try {
+        flow.execute(fn.bind(this)).then(seal(done), done);
+      } finally {
+        this.timeout = timeout;
+      }
     };
+
+    ret.toString = function() {
+      return fn.toString();
+    };
+
+    return ret;
   }
 }
 

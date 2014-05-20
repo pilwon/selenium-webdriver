@@ -252,7 +252,8 @@ public class PageLoadingTest extends JUnit4TestBase {
     assertThat(pageNumber.getText().trim(), equalTo("2"));
   }
 
-  @Ignore(value = {IPHONE, SAFARI}, issues = {3771})
+  @Ignore(value = {IPHONE, SAFARI, HTMLUNIT}, issues = {3771},
+          reason = "HtmlUnit: can't execute JavaScript before a page is loaded")
   @JavascriptEnabled
   @NeedsFreshDriver
   @NoDriverAfterTest
@@ -398,7 +399,7 @@ public class PageLoadingTest extends JUnit4TestBase {
 
       start = System.currentTimeMillis();
       driver.get(pages.xhtmlTestPage);
-      assertThat(driver.getTitle(), equalTo("XHTML Test Page"));
+      wait.until(titleIs("XHTML Test Page"));
       end = System.currentTimeMillis();
       duration = (int) (end - start);
       assertThat(duration, lessThan(2000));
@@ -478,7 +479,7 @@ public class PageLoadingTest extends JUnit4TestBase {
 
       start = System.currentTimeMillis();
       driver.get(pages.xhtmlTestPage);
-      assertThat(driver.getTitle(), equalTo("XHTML Test Page"));
+      wait.until(titleIs("XHTML Test Page"));
       end = System.currentTimeMillis();
       duration = (int) (end - start);
       assertThat(duration, lessThan(2000));
